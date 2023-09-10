@@ -39,7 +39,9 @@
         {
           "initialOrientation": "DEFAULT"
         }
-      ]
-    ]
+      ],
+      "expo-router"
+    ],
+    "scheme": "coderavels"
   }
 }

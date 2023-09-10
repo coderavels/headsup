@@ -15,7 +15,7 @@ const DisplayStates = {
   Correct: 'correct'
 }
 
-const Sensor = ({ cards = [] }) => {
+const Game = ({ cards = [] }) => {
   const [gamma, setGamma] = useState(0);
   const [orientation, setOrientation] = useState(orientation);
   const [currentCard, setCurrentCard] = useState('');
@@ -129,4 +129,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Sensor;
+export default Game;
