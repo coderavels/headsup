@@ -3,8 +3,6 @@ import { useEffect, useRef, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import * as ScreenOrientation from 'expo-screen-orientation';
 
-const Cards = ['Amitabh Bachchan', 'Shahrukh Khan', 'Madhuri Dixit', 'Dharmendra', 'Sunny Deol', 'Bobby Deol', 'Abhishek Bachchan', 'Rani Mukherji', 'Kajol']
-
 const OrientationModes = {
   Positive: 'positive',
   Negative: 'negative',
@@ -17,7 +15,7 @@ const DisplayStates = {
   Correct: 'correct'
 }
 
-const Sensor = () => {
+const Sensor = ({ cards = [] }) => {
   const [gamma, setGamma] = useState(0);
   const [orientation, setOrientation] = useState(orientation);
   const [currentCard, setCurrentCard] = useState('');
@@ -81,7 +79,7 @@ const Sensor = () => {
   }, [gamma, orientationMode])
 
   const selectNewCard = () => {
-    return Cards[Math.floor(Math.random() * Cards.length)]
+    return cards[Math.floor(Math.random() * cards.length)]
   }
 
   useEffect(() => {
