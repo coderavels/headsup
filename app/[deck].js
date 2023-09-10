@@ -1,7 +1,9 @@
 import { DeviceMotion } from 'expo-sensors';
+import { useLocalSearchParams } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import * as ScreenOrientation from 'expo-screen-orientation';
+import { Stack } from 'expo-router';
 
 const OrientationModes = {
   Positive: 'positive',
@@ -15,13 +17,21 @@ const DisplayStates = {
   Correct: 'correct'
 }
 
-const Sensor = ({ cards = [] }) => {
+const DeckQuestions = {
+  'Actors': ['Bobby Deol'],
+  'Food': ['Chole Bhature'],
+  'Movies': ['Soldier'],
+}
+
+const Game = () => {
   const [gamma, setGamma] = useState(0);
   const [orientation, setOrientation] = useState(orientation);
   const [currentCard, setCurrentCard] = useState('');
   const [displayState, setDisplayState] = useState(DisplayStates.Card);
   const [orientationMode, setOrientationMode] = useState('');
   const prevDisplayStateRef = useRef(DisplayStates.Card);
+  const { deck } = useLocalSearchParams();
+  const cards = DeckQuestions[deck]
 
   useEffect(() => {
     ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.ALL);
@@ -102,26 +112,24 @@ const Sensor = ({ cards = [] }) => {
     }
   }
 
-  // console.log('orientation: ', orientation)
-  // console.log('new displayState: ', displayState, ' , prev displayState: ', prevDisplayStateRef.current)
-  // console.log('current Card: ', currentCard)
-
   return (
-    <View>
+    <View style={styles.container}>
+      <Stack.Screen options={{ headerShown: false }} />
       <Text style={styles.titleText}>
         {getDisplayValue()}
       </Text>
-      {/* <Text> */}
-      {/*   {gamma} */}
-      {/* </Text> */}
-      {/* <Text> */}
-      {/*   {orientation} */}
-      {/* </Text> */}
     </View>
   )
 }
 
 const styles = StyleSheet.create({
+  container: {
+    display: 'flex',
+    flex: 1,
+    justifyContent: 'center',
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
   titleText: {
     fontSize: 50,
     fontWeight: 'bold',
@@ -129,4 +137,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Sensor;
+export default Game;

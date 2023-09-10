@@ -1,14 +1,14 @@
+import { View, StyleSheet } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View } from 'react-native';
-import Sensor from './Sensor';
+import Home from './home';
 
-const Cards = ['Amitabh Bachchan', 'Shahrukh Khan', 'Madhuri Dixit', 'Dharmendra', 'Sunny Deol', 'Bobby Deol', 'Abhishek Bachchan', 'Rani Mukherji', 'Kajol']
+const data = ['Actors', 'Movies', 'Food']
 
 export default function App() {
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
-      <Sensor cards={Cards} />
+      <Home data={data} />
     </View>
   );
 }
@@ -21,3 +21,4 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+
