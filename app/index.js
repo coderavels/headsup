@@ -1,36 +1,14 @@
-import { Text, View, FlatList, StyleSheet } from 'react-native';
-import { useState } from 'react';
-import Card from '../components/card';
+import { View, StyleSheet } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
+import Home from './home';
 
-const data = ['Actors', 'Actors', 'Actors']
+const data = ['Actors', 'Movies', 'Food']
 
 export default function App() {
-  const [selected, setSelected] = useState('');
-
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
-      <View>
-        <Text>Select the Deck you would like to play</Text>
-        <FlatList
-          data={data}
-          keyExtractor={item => item}
-          extraData={selected}
-          renderItem={(item) => {
-            return (
-              <Card
-                onPress={() => setSelected(item)}
-                selected={selected === item}
-              >
-                <Text style={{ color: selected === item ? "#fff" : "#000", fontSize: 30, fontWeight: "bold" }}>
-                  {item}
-                </Text>
-              </Card>
-            )
-          }}
-        />
-      </View>
+      <Home data={data} />
     </View>
   );
 }
