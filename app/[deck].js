@@ -1,7 +1,7 @@
 import { DeviceMotion } from 'expo-sensors';
 import { useLocalSearchParams } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
 import * as ScreenOrientation from 'expo-screen-orientation';
 import { Stack } from 'expo-router';
 
@@ -17,21 +17,34 @@ const DisplayStates = {
   Correct: 'correct'
 }
 
-const DeckQuestions = {
-  'Actors': ['Bobby Deol'],
-  'Food': ['Chole Bhature'],
-  'Movies': ['Soldier'],
-}
-
 const Game = () => {
   const [gamma, setGamma] = useState(0);
   const [orientation, setOrientation] = useState(orientation);
-  const [currentCard, setCurrentCard] = useState('');
+  const [currentCard, setCurrentCard] = useState({});
   const [displayState, setDisplayState] = useState(DisplayStates.Card);
   const [orientationMode, setOrientationMode] = useState('');
   const prevDisplayStateRef = useRef(DisplayStates.Card);
-  const { deck } = useLocalSearchParams();
-  const cards = DeckQuestions[deck]
+  const [cards, setCards] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const { deck: deckID } = useLocalSearchParams();
+
+  const getDeckCards = async () => {
+    try {
+      const host = process.env.EXPO_PUBLIC_SERVER_URL
+      const url = `${host}/decks/${deckID}/cards`
+      const response = await fetch(url)
+      const json = await response.json()
+      setCards(json)
+    } catch (error) {
+      console.error(error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    getDeckCards();
+  }, [])
 
   useEffect(() => {
     ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.ALL);
@@ -108,16 +121,22 @@ const Game = () => {
     } else if (displayState === DisplayStates.Correct) {
       return 'CORRECT!'
     } else {
-      return currentCard
+      return currentCard.Name
     }
   }
 
   return (
     <View style={styles.container}>
       <Stack.Screen options={{ headerShown: false }} />
-      <Text style={styles.titleText}>
-        {getDisplayValue()}
-      </Text>
+      {
+        loading ? (
+          <ActivityIndicator />
+        ) : (
+          <Text style={styles.titleText}>
+            {getDisplayValue()}
+          </Text>
+        )
+      }
     </View>
   )
 }
