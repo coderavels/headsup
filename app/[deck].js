@@ -68,8 +68,12 @@ const Game = () => {
     DeviceMotion.isAvailableAsync().then((result) => {
       if (result) {
         deviceMotionSubs = DeviceMotion.addListener((devicemotionData) => {
-          setGamma(devicemotionData.rotation.gamma)
-          setOrientation(devicemotionData.orientation)
+          if (devicemotionData && devicemotionData.rotation) {
+            setGamma(devicemotionData.rotation.gamma)
+          }
+          if (devicemotionData && devicemotionData.orientation) {
+            setOrientation(devicemotionData.orientation)
+          }
         });
 
         DeviceMotion.setUpdateInterval(300);
