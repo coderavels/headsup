@@ -17,6 +17,12 @@ const DisplayStates = {
   Correct: 'correct'
 }
 
+const GameState = {
+  Waiting: 0,
+  Started: 1,
+  Ended: 2,
+}
+
 const Game = () => {
   const [gamma, setGamma] = useState(0);
   const [orientation, setOrientation] = useState(orientation);
@@ -27,6 +33,7 @@ const Game = () => {
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(true);
   const { deck: deckID } = useLocalSearchParams();
+  const [gameState, setGameState] = useState(GameState.Waiting);
 
   const getDeckCards = async () => {
     try {
@@ -35,6 +42,8 @@ const Game = () => {
       const response = await fetch(url)
       const json = await response.json()
       setCards(json)
+      setGameState(GameState.Started)
+
     } catch (error) {
       console.error(error)
     } finally {
@@ -43,7 +52,13 @@ const Game = () => {
   }
 
   useEffect(() => {
-    getDeckCards();
+    getDeckCards().then(
+
+    );
+
+    return () => {
+
+    }
   }, [])
 
   useEffect(() => {
@@ -147,12 +162,14 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
+    backgroundColor: '#9EB384',
   },
   titleText: {
     fontSize: 50,
     fontWeight: 'bold',
     fontFamily: 'sans-serif',
+    color: '#fff',
   },
 });
 

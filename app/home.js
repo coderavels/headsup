@@ -4,10 +4,10 @@ import Card from '../components/card';
 import { router, Stack } from 'expo-router';
 
 const Home = ({ data }) => {
-  const [selected, setSelected] = useState();
+  const [selected, setSelected] = useState(-1);
 
   useEffect(() => {
-    if (selected) {
+    if (selected !== -1) {
       router.push(`/${selected}`)
     }
   }, [selected])
@@ -17,6 +17,7 @@ const Home = ({ data }) => {
       <Stack.Screen options={{ title: 'Select the deck' }} />
       <FlatList
         data={data}
+        numColumns={2}
         keyExtractor={item => item.ID}
         extraData={selected}
         renderItem={({ item }) => {
